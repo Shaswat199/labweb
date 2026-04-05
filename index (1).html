@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NeuralNexus Lab — Research & Innovation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0e0e0f;
+      --paper: #f7f4ef;
+      --cream: #ede9e0;
+      --violet: #5b3af5;
+      --violet-light: #ede9ff;
+      --coral: #f05a2c;
+      --coral-light: #ffeee8;
+      --teal: #0ea68c;
+      --teal-light: #e0f7f3;
+      --amber: #e89b1a;
+      --amber-light: #fef6e0;
+      --muted: #6b6860;
+      --border: #ddd9d0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 17px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(247, 244, 239, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.1rem;
+      color: var(--ink); text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .nav-logo .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--violet); display: inline-block; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.9rem; font-weight: 400; color: var(--muted);
+      text-decoration: none; letter-spacing: 0.02em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 2.5rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg-shapes {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    }
+    .hero-bg-shapes .shape {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); opacity: 0.18;
+    }
+    .shape-1 { width: 600px; height: 600px; background: var(--violet); top: -100px; right: -200px; }
+    .shape-2 { width: 400px; height: 400px; background: var(--coral); bottom: -100px; left: 10%; }
+    .shape-3 { width: 300px; height: 300px; background: var(--teal); top: 30%; left: -100px; }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--violet);
+      background: var(--violet-light); border-radius: 100px;
+      padding: 0.3rem 0.9rem; margin-bottom: 1.5rem;
+    }
+    .hero-tag .pulse {
+      width: 6px; height: 6px; background: var(--violet);
+      border-radius: 50%; animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.6)} }
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.6rem, 5vw, 4.2rem);
+      font-weight: 800; line-height: 1.05;
+      letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    }
+    h1 span.hl { color: var(--violet); position: relative; }
+    .hero-desc {
+      font-size: 1.05rem; color: var(--muted); max-width: 500px;
+      margin-bottom: 2.5rem; font-weight: 300;
+    }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--violet); color: #fff;
+      border: none; border-radius: 8px;
+      padding: 0.85rem 1.8rem; font-size: 0.95rem; font-weight: 500;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: transform 0.18s, box-shadow 0.18s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(91,58,245,0.3); }
+    .btn-outline {
+      background: transparent; color: var(--ink);
+      border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 0.85rem 1.8rem; font-size: 0.95rem; font-weight: 500;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .btn-outline:hover { border-color: var(--ink); background: var(--cream); }
+    .hero-visual {
+      position: relative; z-index: 1;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .hero-card-cluster {
+      position: relative; width: 420px; height: 420px;
+    }
+    .hcard {
+      position: absolute;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.07);
+      animation: float 4s ease-in-out infinite;
+    }
+    .hcard:nth-child(1) { top: 0; left: 20px; width: 220px; animation-delay: 0s; }
+    .hcard:nth-child(2) { top: 130px; right: 0; width: 210px; animation-delay: 0.7s; }
+    .hcard:nth-child(3) { bottom: 20px; left: 40px; width: 240px; animation-delay: 1.4s; }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+    .hcard-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.4rem; }
+    .hcard-val { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; }
+    .hcard-sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+    .hcard-tag { display: inline-block; font-size: 0.7rem; font-weight: 500; padding: 0.15rem 0.5rem; border-radius: 100px; margin-top: 0.5rem; }
+    .tag-v { background: var(--violet-light); color: var(--violet); }
+    .tag-c { background: var(--coral-light); color: var(--coral); }
+    .tag-t { background: var(--teal-light); color: var(--teal); }
+    .tag-a { background: var(--amber-light); color: var(--amber); }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--ink); color: #fff;
+      display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+    }
+    .stat-item {
+      padding: 2rem 3.5rem;
+      text-align: center; border-right: 1px solid rgba(255,255,255,0.1);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800;
+      display: block;
+    }
+    .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.55); letter-spacing: 0.05em; }
+
+    /* ── SECTIONS COMMON ── */
+    section { padding: 6rem 2.5rem; }
+    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-kicker {
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em;
+      font-weight: 600; margin-bottom: 0.75rem; display: block;
+    }
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+      font-weight: 800; letter-spacing: -0.02em; line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .section-desc { color: var(--muted); max-width: 560px; margin: 0 auto; font-weight: 300; }
+
+    /* ── ABOUT ── */
+    #about { background: #fff; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; max-width: 1100px; margin: 0 auto; }
+    .about-text h3 { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 700; margin-bottom: 1rem; }
+    .about-text p { color: var(--muted); font-weight: 300; margin-bottom: 1.2rem; }
+    .about-pillars { display: flex; flex-direction: column; gap: 1.25rem; }
+    .pillar {
+      display: flex; gap: 1rem; align-items: flex-start;
+      background: var(--paper); border-radius: 12px; padding: 1.2rem 1.4rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .pillar:hover { border-color: var(--violet); transform: translateX(4px); }
+    .pillar-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; flex-shrink: 0;
+    }
+    .pi-v { background: var(--violet-light); }
+    .pi-c { background: var(--coral-light); }
+    .pi-t { background: var(--teal-light); }
+    .pillar-title { font-weight: 500; font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .pillar-desc { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── RESEARCH ── */
+    #research { background: var(--paper); }
+    .research-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .research-card {
+      background: #fff; border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform 0.22s, box-shadow 0.22s;
+    }
+    .research-card:hover { transform: translateY(-6px); box-shadow: 0 16px 50px rgba(0,0,0,0.1); }
+    .rc-top { height: 8px; }
+    .rc-body { padding: 1.6rem; }
+    .rc-area { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 0.75rem; }
+    .rc-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .rc-desc { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.2rem; line-height: 1.65; }
+    .rc-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .rc-tag { font-size: 0.72rem; font-weight: 500; padding: 0.25rem 0.65rem; border-radius: 100px; }
+
+    /* ── TEAM ── */
+    #team { background: #fff; }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; max-width: 1100px; margin: 0 auto; }
+    .team-card {
+      text-align: center;
+      padding: 2rem 1.2rem 1.5rem;
+      border-radius: 16px; background: var(--paper);
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .team-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+    .avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      margin: 0 auto 1rem;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800;
+      color: #fff;
+    }
+    .tc-name { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .tc-role { font-size: 0.8rem; color: var(--violet); font-weight: 500; margin-bottom: 0.4rem; }
+    .tc-area { font-size: 0.78rem; color: var(--muted); }
+
+    /* ── PUBLICATIONS ── */
+    #publications { background: var(--ink); color: #fff; }
+    #publications .section-kicker { color: var(--violet); }
+    #publications h2 { color: #fff; }
+    #publications .section-desc { color: rgba(255,255,255,0.5); }
+    .pub-list { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.2rem; }
+    .pub-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 1.5rem 1.8rem;
+      display: flex; gap: 1.5rem; align-items: flex-start;
+      transition: background 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+    .pub-item:hover { background: rgba(255,255,255,0.08); border-color: var(--violet); }
+    .pub-year {
+      font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700;
+      color: var(--violet); min-width: 42px; margin-top: 0.2rem;
+    }
+    .pub-info {}
+    .pub-title { font-weight: 500; margin-bottom: 0.3rem; font-size: 1rem; }
+    .pub-authors { font-size: 0.83rem; color: rgba(255,255,255,0.45); margin-bottom: 0.5rem; }
+    .pub-venue { display: inline-block; font-size: 0.73rem; font-weight: 600; letter-spacing: 0.05em; padding: 0.2rem 0.65rem; border-radius: 100px; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--paper); }
+    .contact-wrap { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+    .contact-info h3 { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; }
+    .contact-info p { color: var(--muted); font-weight: 300; margin-bottom: 2rem; }
+    .contact-details { display: flex; flex-direction: column; gap: 1rem; }
+    .c-detail { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; }
+    .c-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+    .form-group label { font-size: 0.83rem; font-weight: 500; color: var(--ink); }
+    .form-group input, .form-group textarea {
+      background: #fff; border: 1.5px solid var(--border);
+      border-radius: 8px; padding: 0.75rem 1rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.93rem;
+      color: var(--ink); outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--violet); }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); color: rgba(255,255,255,0.45);
+      text-align: center; padding: 2rem;
+      font-size: 0.83rem;
+    }
+    footer a { color: rgba(255,255,255,0.6); text-decoration: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.25rem; }
+      .nav-links { gap: 1.2rem; }
+      #hero { grid-template-columns: 1fr; text-align: center; padding-top: 7rem; }
+      .hero-desc { margin: 0 auto 2rem; }
+      .hero-ctas { justify-content: center; }
+      .hero-visual { display: none; }
+      .about-grid, .contact-wrap { grid-template-columns: 1fr; }
+      .stat-item { padding: 1.5rem 2rem; }
+      section { padding: 4rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><span class="dot"></span> NeuralNexus Lab</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#research">Research</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-tag"><span class="pulse"></span> Open for Collaboration</div>
+    <h1>Pushing the Frontiers of <span class="hl">Intelligent Systems</span></h1>
+    <p class="hero-desc">We are an interdisciplinary research lab advancing the science of machine learning, cognitive computing, and data-driven discovery — for a world that thinks better.</p>
+    <div class="hero-ctas">
+      <a href="#research" class="btn-primary">Explore Research</a>
+      <a href="#contact" class="btn-outline">Work With Us</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card-cluster">
+      <div class="hcard">
+        <div class="hcard-label">Active Projects</div>
+        <div class="hcard-val">12</div>
+        <div class="hcard-sub">Across 4 research tracks</div>
+        <span class="hcard-tag tag-v">Ongoing</span>
+      </div>
+      <div class="hcard">
+        <div class="hcard-label">Publications — 2024</div>
+        <div class="hcard-val">27</div>
+        <div class="hcard-sub">NeurIPS · ICML · Nature</div>
+        <span class="hcard-tag tag-c">Peer-reviewed</span>
+      </div>
+      <div class="hcard">
+        <div class="hcard-label">Lab Members</div>
+        <div class="hcard-val">18</div>
+        <div class="hcard-sub">PhD · Postdoc · Faculty</div>
+        <span class="hcard-tag tag-t">Growing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item"><span class="stat-num">$4.2M</span><span class="stat-label">Total Funding</span></div>
+  <div class="stat-item"><span class="stat-num">140+</span><span class="stat-label">Publications</span></div>
+  <div class="stat-item"><span class="stat-num">18</span><span class="stat-label">Researchers</span></div>
+  <div class="stat-item"><span class="stat-num">9</span><span class="stat-label">Partner Institutions</span></div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <span class="section-kicker" style="color:var(--violet)">Who We Are</span>
+      <h3>A lab built on curiosity, rigor, and impact</h3>
+      <p>Founded in 2016, NeuralNexus Lab is a research group at the intersection of machine learning, computational neuroscience, and AI systems. We believe the best science happens when diverse minds work on hard problems together.</p>
+      <p>Our work spans theory to deployment — from mathematical foundations of learning algorithms to real-world systems that solve pressing problems in healthcare, climate, and human cognition.</p>
+      <a href="#contact" class="btn-primary" style="margin-top:0.5rem">Join Our Lab</a>
+    </div>
+    <div class="about-pillars">
+      <div class="pillar">
+        <div class="pillar-icon pi-v">🔬</div>
+        <div>
+          <div class="pillar-title">Rigorous Science</div>
+          <div class="pillar-desc">We hold our work to the highest standards of reproducibility, transparency, and methodological care.</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon pi-c">🌍</div>
+        <div>
+          <div class="pillar-title">Real-World Impact</div>
+          <div class="pillar-desc">Every project we undertake is connected to a meaningful problem — in science, society, or human wellbeing.</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon pi-t">🤝</div>
+        <div>
+          <div class="pillar-title">Collaborative Culture</div>
+          <div class="pillar-desc">We thrive on open collaboration — across disciplines, institutions, and borders.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="section-header">
+    <span class="section-kicker" style="color:var(--coral)">What We Do</span>
+    <h2>Research Areas</h2>
+    <p class="section-desc">Our lab works across four core tracks, each addressing fundamental challenges in intelligent systems.</p>
+  </div>
+  <div class="research-grid">
+    <div class="research-card">
+      <div class="rc-top" style="background:var(--violet)"></div>
+      <div class="rc-body">
+        <div class="rc-area" style="color:var(--violet)">Track 01</div>
+        <div class="rc-title">Deep Learning Theory</div>
+        <div class="rc-desc">Understanding generalization, expressivity, and optimization landscapes of modern neural architectures — moving beyond empirical observations to principled theory.</div>
+        <div class="rc-tags">
+          <span class="rc-tag tag-v">Optimization</span>
+          <span class="rc-tag tag-v">Generalization</span>
+          <span class="rc-tag tag-v">Transformers</span>
+        </div>
+      </div>
+    </div>
+    <div class="research-card">
+      <div class="rc-top" style="background:var(--coral)"></div>
+      <div class="rc-body">
+        <div class="rc-area" style="color:var(--coral)">Track 02</div>
+        <div class="rc-title">Computational Neuroscience</div>
+        <div class="rc-desc">Bridging AI and brain science — using machine learning to decode neural data and using neuroscience to inspire better AI algorithms.</div>
+        <div class="rc-tags">
+          <span class="rc-tag tag-c">fMRI Analysis</span>
+          <span class="rc-tag tag-c">Neural Coding</span>
+          <span class="rc-tag tag-c">Brain-AI</span>
+        </div>
+      </div>
+    </div>
+    <div class="research-card">
+      <div class="rc-top" style="background:var(--teal)"></div>
+      <div class="rc-body">
+        <div class="rc-area" style="color:var(--teal)">Track 03</div>
+        <div class="rc-title">Robust & Safe AI</div>
+        <div class="rc-desc">Developing systems that are reliable under distribution shift, adversarial conditions, and real-world complexity. Building trustworthy AI from the ground up.</div>
+        <div class="rc-tags">
+          <span class="rc-tag tag-t">Robustness</span>
+          <span class="rc-tag tag-t">Safety</span>
+          <span class="rc-tag tag-t">Uncertainty</span>
+        </div>
+      </div>
+    </div>
+    <div class="research-card">
+      <div class="rc-top" style="background:var(--amber)"></div>
+      <div class="rc-body">
+        <div class="rc-area" style="color:var(--amber)">Track 04</div>
+        <div class="rc-title">AI for Science</div>
+        <div class="rc-desc">Applying machine learning to accelerate discovery in genomics, climate modeling, materials science, and drug design — making AI a tool for humanity's hardest problems.</div>
+        <div class="rc-tags">
+          <span class="rc-tag tag-a">Genomics</span>
+          <span class="rc-tag tag-a">Climate</span>
+          <span class="rc-tag tag-a">Drug Discovery</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="section-header">
+    <span class="section-kicker" style="color:var(--teal)">The People</span>
+    <h2>Meet the Team</h2>
+    <p class="section-desc">Researchers from across the world, united by curiosity and the drive to make AI better.</p>
+  </div>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="avatar" style="background:var(--violet)">PR</div>
+      <div class="tc-name">Prof. Priya Rajan</div>
+      <div class="tc-role">Principal Investigator</div>
+      <div class="tc-area">Deep Learning Theory · Optimization</div>
+    </div>
+    <div class="team-card">
+      <div class="avatar" style="background:var(--coral)">AM</div>
+      <div class="tc-name">Dr. Aarav Mehta</div>
+      <div class="tc-role">Postdoctoral Researcher</div>
+      <div class="tc-area">Computational Neuroscience</div>
+    </div>
+    <div class="team-card">
+      <div class="avatar" style="background:var(--teal)">SK</div>
+      <div class="tc-name">Sana Khan</div>
+      <div class="tc-role">PhD Student</div>
+      <div class="tc-area">Robust & Safe AI</div>
+    </div>
+    <div class="team-card">
+      <div class="avatar" style="background:var(--amber)">RV</div>
+      <div class="tc-name">Rishi Venkat</div>
+      <div class="tc-role">PhD Student</div>
+      <div class="tc-area">AI for Genomics</div>
+    </div>
+    <div class="team-card">
+      <div class="avatar" style="background:#c060b0">LE</div>
+      <div class="tc-name">Lena Eriksson</div>
+      <div class="tc-role">Research Engineer</div>
+      <div class="tc-area">ML Infrastructure · Systems</div>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="section-header">
+    <span class="section-kicker">Selected Work</span>
+    <h2>Publications</h2>
+    <p class="section-desc">A selection of our recent peer-reviewed research. Full list available on Google Scholar.</p>
+  </div>
+  <div class="pub-list">
+    <div class="pub-item">
+      <div class="pub-year">2024</div>
+      <div class="pub-info">
+        <div class="pub-title">Towards a Unified Theory of Implicit Regularization in Overparameterized Networks</div>
+        <div class="pub-authors">P. Rajan, A. Mehta, S. Khan et al.</div>
+        <span class="pub-venue tag-v">NeurIPS 2024</span>
+      </div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-year">2024</div>
+      <div class="pub-info">
+        <div class="pub-title">Neural Decoding at Scale: Transformers for High-Dimensional Brain-Computer Interfaces</div>
+        <div class="pub-authors">A. Mehta, P. Rajan</div>
+        <span class="pub-venue tag-c">Nature Neuroscience</span>
+      </div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-year">2024</div>
+      <div class="pub-info">
+        <div class="pub-title">Certified Robustness Under Real-World Distribution Shifts</div>
+        <div class="pub-authors">S. Khan, R. Venkat, P. Rajan</div>
+        <span class="pub-venue tag-t">ICML 2024</span>
+      </div>
+    </div>
+    <div class="pub-item">
+      <div class="pub-year">2023</div>
+      <div class="pub-info">
+        <div class="pub-title">Protein Fitness Landscape Navigation via Latent Diffusion Models</div>
+        <div class="pub-authors">R. Venkat, L. Eriksson, P. Rajan</div>
+        <span class="pub-venue tag-a">Cell Systems</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <span class="section-kicker" style="color:var(--coral)">Get In Touch</span>
+    <h2>Contact Us</h2>
+    <p class="section-desc">Whether you're a prospective student, collaborator, or industry partner — we'd love to hear from you.</p>
+  </div>
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <h3>We're always open to new ideas and collaborators.</h3>
+      <p>PhD and postdoc positions are currently open. Industry partnerships and sponsored research inquiries are welcome. Drop us a message and we'll get back to you.</p>
+      <div class="contact-details">
+        <div class="c-detail">
+          <div class="c-icon" style="background:var(--violet-light)">📍</div>
+          <span>Building C, Room 402, University Campus, Raipur, CG — 492001</span>
+        </div>
+        <div class="c-detail">
+          <div class="c-icon" style="background:var(--coral-light)">✉️</div>
+          <span>neuralnexus@university.ac.in</span>
+        </div>
+        <div class="c-detail">
+          <div class="c-icon" style="background:var(--teal-light)">📞</div>
+          <span>+91 77123 45678</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="contact-form">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Dr. Jane Smith" />
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="you@university.edu" />
+        </div>
+        <div class="form-group">
+          <label>Reason for Contact</label>
+          <input type="text" placeholder="PhD inquiry / Collaboration / Other" />
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Tell us about your interests or what you'd like to discuss..."></textarea>
+        </div>
+        <button class="btn-primary" style="width:100%;text-align:center">Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 NeuralNexus Research Lab · All Rights Reserved · Built with purpose</p>
+</footer>
+
+<script>
+  // Smooth reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.research-card, .team-card, .pub-item, .pillar').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(24px)';
+    el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
