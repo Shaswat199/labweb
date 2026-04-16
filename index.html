@@ -26,7 +26,16 @@
     .nav-links a { font-size: 0.85rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .nav-links a:hover { color: var(--ink); }
 
-    #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 8rem 2.5rem 5rem; max-width: 1100px; margin: 0 auto; }
+    #hero-wrap { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 2rem; padding: 8rem 2.5rem 5rem; max-width: 1200px; margin: 0 auto; }
+    #hero { display: flex; flex-direction: column; justify-content: center; }
+    #femur-wrap { position: relative; width: 100%; height: 520px; display: flex; align-items: center; justify-content: center; }
+    #femur-canvas { width: 100% !important; height: 100% !important; display: block; }
+    .femur-glow { position: absolute; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, rgba(45,212,191,0.18) 0%, transparent 70%); pointer-events: none; top: 50%; left: 50%; transform: translate(-50%,-50%); animation: glowPulse 3s ease-in-out infinite; }
+    .femur-ring { position: absolute; width: 320px; height: 320px; border-radius: 50%; border: 1px solid rgba(45,212,191,0.15); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: ringPulse 3s ease-in-out infinite; pointer-events: none; }
+    .femur-ring2 { position: absolute; width: 400px; height: 400px; border-radius: 50%; border: 1px solid rgba(201,168,76,0.08); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: ringPulse 3s ease-in-out infinite 1s; pointer-events: none; }
+    .femur-label { position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%); font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal); opacity: 0.7; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
+    @keyframes glowPulse { 0%,100%{opacity:0.6} 50%{opacity:1} }
+    @keyframes ringPulse { 0%,100%{transform:translate(-50%,-50%) scale(1);opacity:0.4} 50%{transform:translate(-50%,-50%) scale(1.06);opacity:0.8} }
     .hero-eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2.5rem; }
     .hero-eyebrow .line { width: 40px; height: 1px; background: var(--gold); }
     .hero-eyebrow span { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); font-weight: 500; }
@@ -127,7 +136,8 @@
     }
     @media (max-width: 768px) {
       nav { padding: 1rem 1.25rem; } .nav-links { display: none; }
-      #hero { padding: 7rem 1.25rem 4rem; }
+      #hero-wrap { grid-template-columns: 1fr; padding: 7rem 1.25rem 4rem; }
+      #femur-wrap { height: 350px; }
       section { padding: 4rem 1.25rem; }
     }
   </style>
@@ -146,23 +156,32 @@
 </nav>
 
 <!-- HERO -->
-<section id="hero">
-  <div class="hero-eyebrow">
-    <span class="line"></span>
-    <span>IIT Bhilai · Department of BSBME</span>
+<div id="hero-wrap">
+  <section id="hero">
+    <div class="hero-eyebrow">
+      <span class="line"></span>
+      <span>IIT Bhilai · Department of BSBME</span>
+    </div>
+    <h1>
+      OsteoImmunology<br>
+      <span class="dim">&amp;</span> Bone <span class="hl">Metabolism</span><br>
+      <span class="dim">Laboratory</span>
+    </h1>
+    <p class="hero-desc">Investigating the molecular crosstalk between the immune system and bone metabolism — from bone cell bioenergetics to ferroptosis — to uncover new strategies against skeletal disease.</p>
+    <div class="hero-ctas">
+      <a href="#research" class="btn-primary">Explore Research</a>
+      <a href="#publications" class="btn-outline">View Publications</a>
+      <a href="#contact" class="btn-outline">Join the Lab</a>
+    </div>
+  </section>
+  <div id="femur-wrap">
+    <div class="femur-glow"></div>
+    <div class="femur-ring"></div>
+    <div class="femur-ring2"></div>
+    <canvas id="femur-canvas"></canvas>
+    <div class="femur-label">Femur · 3D Hologram · Drag to rotate</div>
   </div>
-  <h1>
-    OsteoImmunology<br>
-    <span class="dim">&amp;</span> Bone <span class="hl">Metabolism</span><br>
-    <span class="dim">Laboratory</span>
-  </h1>
-  <p class="hero-desc">Investigating the molecular crosstalk between the immune system and bone metabolism — from bone cell bioenergetics to ferroptosis — to uncover new strategies against skeletal disease.</p>
-  <div class="hero-ctas">
-    <a href="#research" class="btn-primary">Explore Research</a>
-    <a href="#publications" class="btn-outline">View Publications</a>
-    <a href="#contact" class="btn-outline">Join the Lab</a>
-  </div>
-</section>
+</div>
 
 <!-- ABOUT -->
 <section id="about">
@@ -177,7 +196,7 @@
           <div class="pi-title">Principal Investigator</div>
           <div class="pi-dept">Assistant Professor · BSBME · IIT Bhilai</div>
           <div class="pi-divider"></div>
-          <div class="pi-detail"><strong>Email</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2e4f5a5c475e4f5a46476e47475a4c4647424f47004f4d004740">[email&#160;protected]</a></div>
+          <div class="pi-detail"><strong>Email</strong> <span class="js-email" data-u="atripathi" data-d="iitbhilai.ac.in"></span></div>
           <div class="pi-detail"><strong>Dept.</strong> Biological Sciences & Biomedical Engineering</div>
           <div class="pi-detail"><strong>Member</strong> ASBMR · ISBMR</div>
         </div>
@@ -250,7 +269,7 @@
         <div class="tc-name">Dr. Ashish Kumar Tripathi</div>
         <div class="tc-role" style="color:var(--gold)">Principal Investigator</div>
         <div class="tc-area">OsteoImmunology · Bone Metabolism · Mitochondrial Biology</div>
-        <div class="tc-email"><a href="/cdn-cgi/l/email-protection#2b4a5f59425b4a5f43426b42425f494342474a42054a48054245"><span class="__cf_email__" data-cfemail="c7a6b3b5aeb7a6b3afae87aeaeb3a5afaeaba6aee9a6a4e9aea9">[email&#160;protected]</span></a></div>
+        <div class="tc-email"><span class="js-email" data-u="atripathi" data-d="iitbhilai.ac.in"></span></div>
       </div>
     </div>
 
@@ -263,7 +282,7 @@
         <div class="tc-name">Shaswat Sourav Sahoo</div>
         <div class="tc-role" style="color:var(--teal)">PhD Student</div>
         <div class="tc-area">Iron Overload & Ferroptosis</div>
-        <div class="tc-email"><a href="/cdn-cgi/l/email-protection#2c5f444d5f5b4d585f43595e4d5a6c4545584e4445404d45024d4f024542"><span class="__cf_email__" data-cfemail="03706b6270746277706c76716275436a6a77616b6a6f626a2d62602d6a6d">[email&#160;protected]</span></a></div>
+        <div class="tc-email"><span class="js-email" data-u="atripathi" data-d="iitbhilai.ac.in"></span></div>
       </div>
       <div class="team-card">
         <img class="t-photo" src="images/suman.jpg" alt="Suman Ramesh Ramagiri"
@@ -272,7 +291,7 @@
         <div class="tc-name">Suman Ramesh Ramagiri</div>
         <div class="tc-role" style="color:var(--teal)">PhD Student</div>
         <div class="tc-area">OsteoImmunology & Bone Metabolism</div>
-        <div class="tc-email"><a href="/cdn-cgi/l/email-protection#0c7f79616d627e6d614c6565786e6465606d65226d6f226562"><span class="__cf_email__" data-cfemail="9deee8f0fcf3effcf0ddf4f4e9fff5f4f1fcf4b3fcfeb3f4f3">[email&#160;protected]</span></a></div>
+        <div class="tc-email"><span class="js-email" data-u="shaswatsourav" data-d="iitbhilai.ac.in"></span></div>
       </div>
     </div>
 
@@ -285,7 +304,7 @@
         <div class="tc-name">Chaitrali Haribhau Godse</div>
         <div class="tc-role" style="color:var(--blue)">MTech Student</div>
         <div class="tc-area">Bone Biology Research</div>
-        <div class="tc-email"><a href="/cdn-cgi/l/email-protection#beddd6dfd7caccdfd2d7d9d1dacddb8c8afed9d3dfd7d290ddd1d3"><span class="__cf_email__" data-cfemail="a8cbc0c9c1dcdac9c4c1cfc7ccdbcd9a9ce8cfc5c9c1c486cbc7c5">[email&#160;protected]</span></a></div>
+        <div class="tc-email"><span class="js-email" data-u="sumanram" data-d="iitbhilai.ac.in"></span></div>
       </div>
       <div class="team-card">
         <img class="t-photo" src="images/santosh.jpg" alt="Santosh Kumar"
@@ -294,7 +313,7 @@
         <div class="tc-name">Santosh Kumar</div>
         <div class="tc-role" style="color:var(--blue)">MTech Student</div>
         <div class="tc-area">Bone Biology Research</div>
-        <div class="tc-email"><a href="/cdn-cgi/l/email-protection#88fbe9e6fce7fbe0e3fde5e9fabdbeb8bbb8c8efe5e9e1e4a6ebe7e5"><span class="__cf_email__" data-cfemail="5b283a352f342833302e363a296e6d6b686b1b3c363a323775383436">[email&#160;protected]</span></a></div>
+        <div class="tc-email"><span class="js-email" data-u="chaitraligodse24" data-d="gmail.com"></span></div>
       </div>
       <div class="team-card">
         <img class="t-photo" src="images/suraj.jpg" alt="Suraj Satish Deshmukh"
@@ -303,7 +322,7 @@
         <div class="tc-name">Suraj Satish Deshmukh</div>
         <div class="tc-role" style="color:var(--blue)">MTech Student</div>
         <div class="tc-area">Bone Biology Research</div>
-        <div class="tc-email"><a href="/cdn-cgi/l/email-protection#aedddbdccfc4cadec6cfdcc3cfcdc7dddaeec9c3cfc7c280cdc1c3"><span class="__cf_email__" data-cfemail="94e7e1e6f5fef0e4fcf5e6f9f5f7fde7e0d4f3f9f5fdf8baf7fbf9">[email&#160;protected]</span></a></div>
+        <div class="tc-email"><span class="js-email" data-u="santoshkumar56030" data-d="gmail.com"></span></div>
       </div>
     </div>
     <p style="margin-top:2rem;font-size:0.85rem;color:var(--muted);text-align:center;">Interested in joining? <a href="#contact" style="color:var(--gold);text-decoration:none;">Get in touch →</a></p>
@@ -505,7 +524,7 @@
         <div class="c-details">
           <div class="c-detail">
             <div class="c-icon">📧</div>
-            <div class="c-text"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="026376706b7263766a6b426b6b76606a6b6e636b2c63612c6b6c">[email&#160;protected]</a></div>
+            <div class="c-text"><span class="js-email" data-u="atripathi" data-d="iitbhilai.ac.in"></span></div>
           </div>
           <div class="c-detail">
             <div class="c-icon">📍</div>
@@ -535,4 +554,280 @@
             <option>Other</option>
           </select>
         </div>
-        <div class="form-group"><label>Message</label><textarea placeholder="Tell us about your background and re
+        <div class="form-group"><label>Message</label><textarea placeholder="Tell us about your background and reseach interests..."></textarea></div>
+        <button class="btn-primary" style="width:100%;text-align:center;">Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© OsteoImmunology & Bone Metabolism Lab, IIT Bhilai</div>
+</footer>
+
+<script>
+  // Build email links at runtime to bypass Cloudflare email protection
+  document.querySelectorAll('.js-email').forEach(el => {
+    const u = el.getAttribute('data-u');
+    const d = el.getAttribute('data-d');
+    const email = u + '@' + d;
+    const a = document.createElement('a');
+    a.href = 'mailto:' + email;
+    a.textContent = email;
+    a.style.color = 'var(--gold)';
+    a.style.textDecoration = 'none';
+    a.style.wordBreak = 'break-all';
+    a.addEventListener('mouseover', () => a.style.textDecoration = 'underline');
+    a.addEventListener('mouseout', () => a.style.textDecoration = 'none');
+    el.replaceWith(a);
+  });
+
+  function filterPubs(year, btn) {
+    document.querySelectorAll('.pub-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.pub-item').forEach(item => {
+      item.style.display = (year === 'all' || item.dataset.year === year) ? 'flex' : 'none';
+    });
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; }
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.research-card, .team-card, .pub-item').forEach((el, i) => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = `opacity 0.5s ease ${i*0.04}s, transform 0.5s ease ${i*0.04}s`;
+    observer.observe(el);
+  });
+</script>
+
+<!-- THREE.JS FEMUR HOLOGRAM -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function() {
+  const canvas = document.getElementById('femur-canvas');
+  const wrap = document.getElementById('femur-wrap');
+  if (!canvas || !wrap) return;
+
+  const W = wrap.clientWidth, H = wrap.clientHeight;
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setSize(W, H);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+  camera.position.set(0, 0, 5);
+
+  // ── Build femur geometry from scratch using Three.js primitives ──
+  const femurGroup = new THREE.Group();
+
+  // Hologram material - teal wireframe glow
+  const holoMat = new THREE.MeshBasicMaterial({
+    color: 0x2dd4bf,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.55
+  });
+  const holoMatSolid = new THREE.MeshPhongMaterial({
+    color: 0x0a2a28,
+    emissive: 0x0d4a44,
+    transparent: true,
+    opacity: 0.6,
+    shininess: 80,
+    side: THREE.FrontSide
+  });
+  const holoMatGold = new THREE.MeshBasicMaterial({
+    color: 0xc9a84c,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.2
+  });
+
+  function addBone(geo) {
+    const solid = new THREE.Mesh(geo, holoMatSolid);
+    const wire = new THREE.Mesh(geo, holoMat);
+    femurGroup.add(solid);
+    femurGroup.add(wire);
+  }
+
+  // FEMORAL SHAFT - long cylinder, slightly curved
+  const shaftGeo = new THREE.CylinderGeometry(0.11, 0.13, 2.8, 16, 12);
+  // Bend the shaft slightly for anatomical realism
+  const shaftPos = shaftGeo.attributes.position;
+  for (let i = 0; i < shaftPos.count; i++) {
+    const y = shaftPos.getY(i);
+    const bend = Math.sin((y / 2.8 + 0.5) * Math.PI) * 0.08;
+    shaftPos.setX(i, shaftPos.getX(i) + bend);
+  }
+  shaftGeo.computeVertexNormals();
+  addBone(shaftGeo);
+
+  // FEMORAL HEAD (ball) - sphere at top, offset medially
+  const headGeo = new THREE.SphereGeometry(0.32, 20, 20);
+  const headMesh1 = new THREE.Mesh(headGeo, holoMatSolid);
+  const headMesh2 = new THREE.Mesh(headGeo, holoMat);
+  headMesh1.position.set(-0.52, 1.65, 0);
+  headMesh2.position.set(-0.52, 1.65, 0);
+  femurGroup.add(headMesh1);
+  femurGroup.add(headMesh2);
+
+  // FEMORAL NECK - cylinder connecting head to shaft
+  const neckGeo = new THREE.CylinderGeometry(0.14, 0.16, 0.7, 12, 4);
+  const neck1 = new THREE.Mesh(neckGeo, holoMatSolid);
+  const neck2 = new THREE.Mesh(neckGeo, holoMat);
+  neck1.position.set(-0.26, 1.35, 0);
+  neck2.position.set(-0.26, 1.35, 0);
+  neck1.rotation.z = Math.PI / 5;
+  neck2.rotation.z = Math.PI / 5;
+  femurGroup.add(neck1);
+  femurGroup.add(neck2);
+
+  // GREATER TROCHANTER - bump on lateral side
+  const gtGeo = new THREE.SphereGeometry(0.22, 12, 10);
+  gtGeo.scale(1, 1.3, 0.8);
+  const gt1 = new THREE.Mesh(gtGeo, holoMatSolid);
+  const gt2 = new THREE.Mesh(gtGeo, holoMat);
+  gt1.position.set(0.22, 1.2, 0);
+  gt2.position.set(0.22, 1.2, 0);
+  femurGroup.add(gt1);
+  femurGroup.add(gt2);
+
+  // LESSER TROCHANTER - smaller bump medial side
+  const ltGeo = new THREE.SphereGeometry(0.11, 10, 8);
+  const lt1 = new THREE.Mesh(ltGeo, holoMatSolid);
+  const lt2 = new THREE.Mesh(ltGeo, holoMat);
+  lt1.position.set(-0.18, 0.95, 0.05);
+  lt2.position.set(-0.18, 0.95, 0.05);
+  femurGroup.add(lt1);
+  femurGroup.add(lt2);
+
+  // DISTAL CONDYLES - two rounded bumps at bottom
+  const condyleGeo = new THREE.SphereGeometry(0.22, 14, 12);
+  condyleGeo.scale(1.1, 0.85, 1.2);
+  [-0.19, 0.19].forEach(xOff => {
+    const c1 = new THREE.Mesh(condyleGeo, holoMatSolid);
+    const c2 = new THREE.Mesh(condyleGeo, holoMat);
+    c1.position.set(xOff, -1.45, 0.05);
+    c2.position.set(xOff, -1.45, 0.05);
+    femurGroup.add(c1);
+    femurGroup.add(c2);
+  });
+
+  // DISTAL WIDENING - flare at bottom
+  const flareGeo = new THREE.CylinderGeometry(0.38, 0.13, 0.45, 16, 4);
+  addBone(flareGeo);
+  femurGroup.children[femurGroup.children.length-2].position.set(0, -1.2, 0);
+  femurGroup.children[femurGroup.children.length-1].position.set(0, -1.2, 0);
+
+  // PATELLAR GROOVE - slight indent between condyles
+  const grooveGeo = new THREE.TorusGeometry(0.12, 0.055, 8, 16, Math.PI);
+  const gr1 = new THREE.Mesh(grooveGeo, holoMatSolid);
+  const gr2 = new THREE.Mesh(grooveGeo, holoMat);
+  gr1.position.set(0, -1.48, 0.18);
+  gr2.position.set(0, -1.48, 0.18);
+  gr1.rotation.x = Math.PI / 2;
+  gr2.rotation.x = Math.PI / 2;
+  femurGroup.add(gr1);
+  femurGroup.add(gr2);
+
+  // Gold accent wire overlay for hologram effect
+  const accentGeo = new THREE.CylinderGeometry(0.115, 0.135, 2.8, 8, 6);
+  const accent = new THREE.Mesh(accentGeo, holoMatGold);
+  femurGroup.add(accent);
+
+  // Scanning ring that travels up and down
+  const scanGeo = new THREE.TorusGeometry(0.5, 0.008, 6, 48);
+  const scanMat = new THREE.MeshBasicMaterial({ color: 0x2dd4bf, transparent: true, opacity: 0.7 });
+  const scanRing = new THREE.Mesh(scanGeo, scanMat);
+  scanRing.rotation.x = Math.PI / 2;
+  femurGroup.add(scanRing);
+
+  // Floating data nodes
+  const nodeMat = new THREE.MeshBasicMaterial({ color: 0xc9a84c, transparent: true, opacity: 0.9 });
+  const nodes = [];
+  [[-0.52, 1.65, 0], [0.22, 1.2, 0], [-0.18, 0.95, 0.05], [-0.19, -1.45, 0.05], [0.19, -1.45, 0.05]].forEach(pos => {
+    const ng = new THREE.SphereGeometry(0.035, 8, 8);
+    const nm = new THREE.Mesh(ng, nodeMat);
+    nm.position.set(...pos);
+    femurGroup.add(nm);
+    nodes.push(nm);
+  });
+
+  // Data lines connecting nodes
+  const lineMat = new THREE.LineBasicMaterial({ color: 0xc9a84c, transparent: true, opacity: 0.3 });
+  nodes.forEach((n, i) => {
+    if (i < nodes.length - 1) {
+      const pts = [n.position.clone(), nodes[i+1].position.clone()];
+      const lineGeo = new THREE.BufferGeometry().setFromPoints(pts);
+      femurGroup.add(new THREE.Line(lineGeo, lineMat));
+    }
+  });
+
+  scene.add(femurGroup);
+  femurGroup.rotation.z = -0.1;
+
+  // Lights
+  const ambientLight = new THREE.AmbientLight(0x2dd4bf, 0.4);
+  scene.add(ambientLight);
+  const pointLight1 = new THREE.PointLight(0x2dd4bf, 1.5, 20);
+  pointLight1.position.set(3, 3, 3);
+  scene.add(pointLight1);
+  const pointLight2 = new THREE.PointLight(0xc9a84c, 0.8, 20);
+  pointLight2.position.set(-3, -2, 2);
+  scene.add(pointLight2);
+
+  // Mouse drag rotation
+  let isDragging = false, prevMouse = { x: 0, y: 0 };
+  let autoRotate = true;
+  canvas.addEventListener('mousedown', e => { isDragging = true; autoRotate = false; prevMouse = { x: e.clientX, y: e.clientY }; });
+  window.addEventListener('mouseup', () => { isDragging = false; setTimeout(() => autoRotate = true, 2000); });
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const dx = e.clientX - prevMouse.x, dy = e.clientY - prevMouse.y;
+    femurGroup.rotation.y += dx * 0.01;
+    femurGroup.rotation.x += dy * 0.01;
+    prevMouse = { x: e.clientX, y: e.clientY };
+  });
+  canvas.addEventListener('touchstart', e => { isDragging = true; autoRotate = false; prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY }; });
+  window.addEventListener('touchend', () => { isDragging = false; setTimeout(() => autoRotate = true, 2000); });
+  window.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    const dx = e.touches[0].clientX - prevMouse.x, dy = e.touches[0].clientY - prevMouse.y;
+    femurGroup.rotation.y += dx * 0.01;
+    femurGroup.rotation.x += dy * 0.01;
+    prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  });
+
+  // Resize handler
+  window.addEventListener('resize', () => {
+    const W2 = wrap.clientWidth, H2 = wrap.clientHeight;
+    renderer.setSize(W2, H2);
+    camera.aspect = W2 / H2;
+    camera.updateProjectionMatrix();
+  });
+
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.016;
+    if (autoRotate) {
+      femurGroup.rotation.y += 0.006;
+      femurGroup.rotation.x = Math.sin(t * 0.2) * 0.12;
+    }
+    // Scanning ring moves up and down
+    scanRing.position.y = Math.sin(t * 0.8) * 1.5;
+    scanMat.opacity = 0.4 + Math.sin(t * 1.5) * 0.3;
+    // Pulse data nodes
+    nodes.forEach((n, i) => {
+      n.scale.setScalar(0.8 + Math.sin(t * 1.2 + i * 0.8) * 0.4);
+    });
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+</script>
+
+</body>
+</html>
