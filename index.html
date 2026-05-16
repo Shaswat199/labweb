@@ -17,7 +17,7 @@
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); font-size: 17px; line-height: 1.7; overflow-x: hidden; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--ink); font-size: 17px; line-height: 1.7; }
 
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1rem 2.5rem; background: rgba(10,10,11,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); }
     .nav-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 0.6rem; }
@@ -26,9 +26,9 @@
     .nav-links a { font-size: 0.85rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
     .nav-links a:hover { color: var(--ink); }
 
-    #hero-wrap { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 2rem; padding: 8rem 2.5rem 5rem; max-width: 1200px; margin: 0 auto; }
+    #hero-wrap { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 2rem; padding: 8rem 2.5rem 5rem; max-width: 1200px; margin: 0 auto; overflow: visible; }
     #hero { display: flex; flex-direction: column; justify-content: center; }
-    #femur-wrap { position: relative; width: 100%; height: 520px; display: flex; align-items: center; justify-content: center; }
+    #femur-wrap { position: relative; width: 100%; height: 580px; display: flex; align-items: center; justify-content: center; overflow: visible; }
     #femur-canvas { width: 100% !important; height: 100% !important; display: block; }
     .femur-glow { position: absolute; width: 280px; height: 280px; border-radius: 50%; background: radial-gradient(circle, rgba(45,212,191,0.18) 0%, transparent 70%); pointer-events: none; top: 50%; left: 50%; transform: translate(-50%,-50%); animation: glowPulse 3s ease-in-out infinite; }
     .femur-ring { position: absolute; width: 320px; height: 320px; border-radius: 50%; border: 1px solid rgba(45,212,191,0.15); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: ringPulse 3s ease-in-out infinite; pointer-events: none; }
@@ -207,8 +207,8 @@
           <h2>Decoding Bone & Immune System Interactions</h2>
         </div>
         <p>The OsteoImmunology and Bone Metabolism Laboratory at IIT Bhilai is dedicated to understanding the molecular dialogue between the immune system and skeletal tissue. Our research spans from fundamental cellular biology to translational science, aiming to develop novel therapeutic strategies for bone diseases.</p>
-        <p>Led by Dr. Ashish Kumar Tripathi, our lab integrates molecular biology, cellular metabolism, and pharmacology. We study how conditions such as HIV, sickle cell disease, obesity, and metabolic disorders disrupt bone homeostasis — and how we can intervene to restore it.</p>
-        <p>We collaborate with leading institutions worldwide including Emory University, and our work has been published in high-impact journals including Cell Death & Disease, Journal of Infectious Diseases, ACS Pharmacology & Translational Science, and Free Radical Biology & Medicine.</p>
+        <p>Led by Dr. Ashish Kumar Tripathi, our lab integrates molecular biology, cellular metabolism, and pharmacology. We study how conditions such as sickle cell disease, obesity, and metabolic disorders disrupt bone homeostasis — and how we can intervene to restore it.</p>
+
       </div>
     </div>
   </div>
@@ -566,6 +566,56 @@
 </footer>
 
 <script>
+
+  // Contact form submission via Formspree
+  async function submitForm() {
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const role = document.getElementById('cf-role').value;
+    const message = document.getElementById('cf-message').value.trim();
+    const btn = document.getElementById('cf-submit');
+    const successBox = document.getElementById('form-success');
+    const errorBox = document.getElementById('form-error');
+
+    if (!name || !email || !message) {
+      alert('Please fill in your name, email, and message.');
+      return;
+    }
+
+    btn.textContent = 'Sending...';
+    btn.style.opacity = '0.7';
+    btn.disabled = true;
+    successBox.style.display = 'none';
+    errorBox.style.display = 'none';
+
+    try {
+      // ⚠️ REPLACE "YOUR_FORM_ID" below with your Formspree form ID
+      const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          role: role,
+          message: message,
+          _subject: 'New message from OsteoImmunology Lab website - ' + role
+        })
+      });
+      if (res.ok) {
+        successBox.style.display = 'block';
+        document.getElementById('cf-name').value = '';
+        document.getElementById('cf-email').value = '';
+        document.getElementById('cf-role').value = '';
+        document.getElementById('cf-message').value = '';
+      } else { throw new Error('Failed'); }
+    } catch(e) {
+      errorBox.style.display = 'block';
+    }
+    btn.textContent = 'Send Message';
+    btn.style.opacity = '1';
+    btn.disabled = false;
+  }
+
   // Build email links at runtime to bypass Cloudflare email protection
   document.querySelectorAll('.js-email').forEach(el => {
     const u = el.getAttribute('data-u');
@@ -618,7 +668,7 @@
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
-  camera.position.set(0, 0, 5);
+  camera.position.set(0, 0, 7.5);
 
   // ── Build femur geometry from scratch using Three.js primitives ──
   const femurGroup = new THREE.Group();
@@ -765,6 +815,7 @@
     }
   });
 
+  femurGroup.scale.setScalar(0.82);
   scene.add(femurGroup);
   femurGroup.rotation.z = -0.1;
 
